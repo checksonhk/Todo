@@ -27,6 +27,7 @@ controller.show = async (req, res) => {
 };
 
 controller.create = async (req, res) => {
+  console.log(req.body.due_date);
   try {
     const newTask = await Task.create({ title: req.body.title, due_date: req.body.due_date });
     res.json({
@@ -40,8 +41,8 @@ controller.create = async (req, res) => {
 
 controller.update = async (req, res) => {
   try {
-    const updatedTask = await Task.update({ title: req.body.title, status: req.body.status, due_date: req.body.due_date }, req.body.id);
-    res.json({ data: { updatedTask } });
+    const updatedTask = await Task.update({ title: req.body.title, status: req.body.status, due_date: req.body.due_date }, req.params.id);
+    res.sendStatus(200);
   } catch (err) {
     console.log('ERROR', err);
     res.status(400).json({ message: 'Failed to update task' });

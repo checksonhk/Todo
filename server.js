@@ -30,13 +30,16 @@ app.use(
 // request body middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 
 // separated Routes for each Resource
 // const usersRoutes = require('./routes/users');
 const taskRoutes = require('./routes/tasks');
 
 app.use('/api/tasks', taskRoutes);
+
+app.get('/', (req, res) => {
+  res.render('index', { title: 'Express Todo Example' });
+});
 
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
