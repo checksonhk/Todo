@@ -1,5 +1,4 @@
 const express = require('express');
-// create Controller
 const controller = require('../controller/taskController');
 const taskRoutes = express.Router();
 

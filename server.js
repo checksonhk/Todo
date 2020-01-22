@@ -6,8 +6,10 @@ const PORT = process.env.PORT || 8080;
 const ENV = process.env.ENV || 'development';
 const express = require('express');
 const bodyParser = require('body-parser');
+// const session = require('express-session');
 const cookieSession = require('cookie-session');
 const morgan = require('morgan');
+const forceSession = require('./lib/utils');
 
 // instantiate express
 const app = express();
@@ -27,6 +29,15 @@ app.use(
   }),
 );
 
+// app.use(
+//   session({
+//     secret: 'somerandomwords',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: true, maxAge: 365 * 24 * 60 * 60 * 1000 },
+//   }),
+// );
+
 // request body middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,7 +46,8 @@ app.use(express.static(__dirname + '/public'));
 // separated Routes for each Resource
 // const usersRoutes = require('./routes/users');
 const taskRoutes = require('./routes/tasks');
-
+const userRoutes = require('./routes/users');
+app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
 
 app.get('/', (req, res) => {

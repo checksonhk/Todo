@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const controller = require('../controller/userController.js');
+const userRoutes = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+userRoutes.get('/', controller.index);
+// show route for development purposes only
+userRoutes.get('/:id', controller.show);
+userRoutes.post('/', controller.create);
 
-module.exports = router;
+module.exports = userRoutes;
