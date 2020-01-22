@@ -6,6 +6,19 @@ Task.findAll = () => {
   return db.query('SELECT * FROM tasks ORDER BY due_date');
 };
 
+Task.findAllByUser = userId => {
+  return db.query('SELECT * FROM tasks WHERE user_id = $1 ORDER BY due_date ', [userId]);
+};
+
+Task.findByTitle = (userId, query) => {
+  return db.query('SELECT * FROM tasks WHERE user_id = $1 AND title ILIKE $2 OR title ILIKE $3 OR title ILIKE $4 ORDER BY due_date', [
+    userId,
+    `${query}%`,
+    `%${query}`,
+    `%${query}%`,
+  ]);
+};
+
 Task.findById = id => {
   return db.oneOrNone('SELECT * FROM tasks WHERE id = $1', [id]);
 };

@@ -4,7 +4,8 @@ const controller = {};
 
 controller.index = async (req, res) => {
   try {
-    const tasks = await Task.findAll();
+    const tasks = await Task.findAllByUser(req.session.userId);
+    console.log(tasks);
     res.json({
       data: { tasks },
     });
@@ -23,6 +24,18 @@ controller.show = async (req, res) => {
   } catch (err) {
     console.log('ERROR', err);
     res.status(400).json({ message: `Failed to find task ${req.params.id}` });
+  }
+};
+
+controller.search = async (req, res) => {
+  try {
+    const task = await Task.findByTitle(req.params.id, req.query.query);
+    res.json({
+      data: { task },
+    });
+  } catch (err) {
+    console.log('ERROR', err);
+    res.status(400).json({ message: `Failed to find task contaning ${req.query}` });
   }
 };
 
