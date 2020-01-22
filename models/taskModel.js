@@ -29,8 +29,8 @@ Task.findById = id => {
   return db.oneOrNone('SELECT * FROM tasks WHERE id = $1', [id]);
 };
 
-Task.create = task => {
-  return db.one('INSERT INTO tasks (title, due_date) VALUES  ($1, $2) RETURNING *', [task.title, task.due_date]);
+Task.create = (task, user_id) => {
+  return db.one('INSERT INTO tasks (title, due_date,user_id) VALUES  ($1, $2, $3) RETURNING *', [task.title, task.due_date, user_id]);
 };
 
 Task.findLength = task => {
@@ -38,7 +38,13 @@ Task.findLength = task => {
 };
 
 Task.update = (task, id) => {
-  return db.none('UPDATE tasks SET title = $1, status = $2, due_date = $3 WHERE id = $4', [task.title, task.status, task.due_date, id]);
+  return db.none('UPDATE tasks SET title = $1, status = $2, due_date = $3, category_id = $4 WHERE id = $5', [
+    task.title,
+    task.status,
+    task.due_date,
+    task.category_id,
+    id,
+  ]);
 };
 
 Task.destroy = id => {

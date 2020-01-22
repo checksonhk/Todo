@@ -4,8 +4,13 @@ const controller = {};
 
 controller.index = async (req, res) => {
   try {
-    const tasks = await Task.findAllByUser(req.session.userId);
-    console.log(tasks);
+    if (req.session.userId) {
+      const tasks = await Task.findAllByUser(req.session.userId);
+      return res.json({
+        data: { tasks },
+      });
+    }
+    const tasks = await Task.findAll();
     res.json({
       data: { tasks },
     });
@@ -42,7 +47,7 @@ controller.search = async (req, res) => {
 controller.create = async (req, res) => {
   console.log(req.body.due_date);
   try {
-    const newTask = await Task.create({ title: req.body.title, due_date: req.body.due_date });
+    const newTask = await Task.create({ title: req.body.title, due_date: req.body.due_date }, req.session.userId);
     res.json({
       data: { newTask },
     });
@@ -54,7 +59,10 @@ controller.create = async (req, res) => {
 
 controller.update = async (req, res) => {
   try {
-    const updatedTask = await Task.update({ title: req.body.title, status: req.body.status, due_date: req.body.due_date }, req.params.id);
+    const updatedTask = await Task.update(
+      { title: req.body.title, status: req.body.status, due_date: req.body.due_date, category_id: req.body.category },
+      req.params.id,
+    );
     res.sendStatus(200);
   } catch (err) {
     console.log('ERROR', err);
