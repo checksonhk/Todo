@@ -10,6 +10,7 @@ Task.findAllByUser = userId => {
   return db.query('SELECT * FROM tasks WHERE user_id = $1 ORDER BY due_date ', [userId]);
 };
 
+// use for Search feature, very inefficient, unscalable
 Task.findByTitle = (userId, query) => {
   return db.query('SELECT * FROM tasks WHERE user_id = $1 AND title ILIKE $2 OR title ILIKE $3 OR title ILIKE $4 ORDER BY due_date', [
     userId,
@@ -17,6 +18,11 @@ Task.findByTitle = (userId, query) => {
     `%${query}`,
     `%${query}%`,
   ]);
+};
+
+// use for filtering by status, should create validation for ensuring it only accept 'active', 'pending', 'done'
+Task.findAllByStatus = (userId, status) => {
+  return db.query('SELECT * FROM tasks WHERE user_id = $1 AND status = $2 ORDER BY due_date ', [userId, status]);
 };
 
 Task.findById = id => {
