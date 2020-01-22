@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXIST tasks (
   status STATUS DEFAULT 'active',
   active BOOLEAN NOT NULL DEFAULT TRUE,
   created_at TIMESTAMP NOT NULL DEFAULT NOW()
-  due_by TIMESTAMP NOT NULL
+  due_date TIMESTAMP NOT NULL
   -- category_id
 )
 
