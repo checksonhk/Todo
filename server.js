@@ -1,32 +1,42 @@
+// load .env data into process.env
+require('dotenv').config();
+
+// Web server config
+const PORT = process.env.PORT || 8080;
+const ENV = process.env.ENV || 'development';
 const express = require('express');
-const path = require('path');
-const logger = require('morgan');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
+const morgan = require('morgan');
+
+// instantiate express
 const app = express();
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, function() {
-  console.log(`listening on port ${PORT}`);
-});
+// Load the logger first so all (static) HTTP requests are logged to STDOUT
+// 'dev' = Concise output colored by response status for development use.
+// The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 
-// app.use(cors());
-app.use(logger('dev'));
+app.use(morgan('dev'));
+
+// Register cookie session middleware
+app.use(
+  cookieSession({
+    name: 'session',
+    keys: ['somerandomwords'],
+    maxAge: 365 * 24 * 60 * 60 * 1000, // 1 year
+  }),
+);
+
+// request body middleware
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const taskRouter = require('./routes/tasks');
-const usersRouter = require('./routes/users');
+app.use(express.static('public'));
 
-// app.use(express.static(path.join(__dirname, 'client/build')));
+// separated Routes for each Resource
+// const usersRoutes = require('./routes/users');
+const taskRoutes = require('./routes/tasks');
 
-// app.get("/", function(req, res) {
-//   res.sendFile(__dirname + "/public/index.html");
-// });
+app.use('/api/tasks', taskRoutes);
 
-app.use('/api/task', taskRouter);
-
-app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'public/build', 'index.html'));
-});
+app.listen(PORT, () => console.log(`listening on port ${PORT}`));

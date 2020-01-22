@@ -1,4 +1,4 @@
-INSERT INTO tasks (title, due_by) VALUES 
+INSERT INTO tasks (title, due_date) VALUES 
   ('Be A Kind Person', '2020-02-16 20:09:43'),
   ('Learn Programming!', '2020-02-16 20:09:43'),
   ('Improve Yourself', '2020-02-16 20:09:43'),
