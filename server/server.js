@@ -50,8 +50,10 @@ const userRoutes = require('./routes/users');
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
 
-app.get('/', (req, res) => {
-  res.render('index', { title: 'Express Todo Example' });
+app.use(express.static(__dirname)); //here is important thing - no static directory, because all static :)
+
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));

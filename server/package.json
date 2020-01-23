@@ -2,6 +2,7 @@
   "name": "todo-list",
   "version": "0.0.0",
   "private": true,
+  "homepage": ".",
   "scripts": {
     "start": "nodemon ./server.js",
     "db:reset": "node bin/resetdb.js"
