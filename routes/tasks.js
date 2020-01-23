@@ -5,7 +5,6 @@ const taskRoutes = express.Router();
 taskRoutes.get('/:id', controller.show);
 // should merge routes
 taskRoutes.get('/', controller.index);
-taskRoutes.get('/?', controller.search);
 
 taskRoutes.post('/', controller.create);
 taskRoutes.put('/:id', controller.update);

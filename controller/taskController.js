@@ -4,7 +4,16 @@ const controller = {};
 
 controller.index = async (req, res) => {
   try {
-    if (req.session.userId) {
+    console.log(req.query);
+    // search query
+    if (req.query.query) {
+      const task = await Task.findByTitle(req.params.id, req.query.query);
+      return res.json({
+        data: { task },
+      });
+    }
+    // If exisiting user, return task for that user
+    else if (req.session.userId) {
       const tasks = await Task.findAllByUser(req.session.userId);
       return res.json({
         data: { tasks },
@@ -32,17 +41,17 @@ controller.show = async (req, res) => {
   }
 };
 
-controller.search = async (req, res) => {
-  try {
-    const task = await Task.findByTitle(req.params.id, req.query.query);
-    res.json({
-      data: { task },
-    });
-  } catch (err) {
-    console.log('ERROR', err);
-    res.status(400).json({ message: `Failed to find task contaning ${req.query}` });
-  }
-};
+// controller.search = async (req, res) => {
+//   try {
+//     const task = await Task.findByTitle(req.params.id, req.query.query);
+//     res.json({
+//       data: { task },
+//     });
+//   } catch (err) {
+//     console.log('ERROR', err);
+//     res.status(400).json({ message: `Failed to find task contaning ${req.query}` });
+//   }
+// };
 
 controller.create = async (req, res) => {
   console.log(req.body.due_date);
