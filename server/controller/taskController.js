@@ -7,9 +7,9 @@ controller.index = async (req, res) => {
     console.log(req.query);
     // search query
     if (req.query.query) {
-      const task = await Task.findByTitle(req.params.id, req.query.query);
+      const tasks = await Task.findByTitle(req.params.id, req.query.query);
       return res.json({
-        data: { task },
+        data: { tasks },
       });
     }
     // If exisiting user, return task for that user
