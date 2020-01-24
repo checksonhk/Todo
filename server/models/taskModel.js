@@ -30,7 +30,7 @@ Task.findById = id => {
 };
 
 Task.create = (task, user_id) => {
-  return db.one('INSERT INTO tasks (title, due_date,user_id) VALUES  ($1, $2, $3) RETURNING *', [task.title, task.due_date, user_id]);
+  return db.one('INSERT INTO tasks (title, due_date, user_id) VALUES  ($1, $2, $3) RETURNING *', [task.title, task.due_date, user_id]);
 };
 
 Task.findLength = task => {
