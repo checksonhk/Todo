@@ -4,7 +4,6 @@ const controller = {};
 
 controller.index = async (req, res) => {
   try {
-    console.log(req.query);
     // search query
     if (req.query.query) {
       const tasks = await Task.findByTitle(req.params.id, req.query.query);
@@ -12,13 +11,14 @@ controller.index = async (req, res) => {
         data: { tasks },
       });
     }
-    // If exisiting user, return task for that user
+    // If exisiting user, return task for that user otherwise return all tasks
     else if (req.session.userId) {
       const tasks = await Task.findAllByUser(req.session.userId);
       return res.json({
         data: { tasks },
       });
     }
+
     const tasks = await Task.findAll();
     res.json({
       data: { tasks },

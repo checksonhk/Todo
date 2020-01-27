@@ -12,7 +12,7 @@ controller.index = async (req, res) => {
       });
     }
     // if user doesn't exist create a user and set session
-    // figure why sessionID is undefined, should use sessionID as unique identifier
+    // figure out why sessionID is undefined, should use sessionID as unique identifier
     const newUser = await User.create();
     req.session.userId = newUser.id;
     res.json({

@@ -1,0 +1,9 @@
+Why did I decide to use the MVC architecture ?
+
+First, its a widely used architecture, and I support the speration of concern logic, ie. each component does one thing and only one thing. This allows for my code to be easily understanable by others. 
+
+Models - Model objects are parts of the application that implement logic for the applications data. eg, in the case of the ToDo API, it manages all queries to the PSQL database.
+Views - Views are the components that display the user interface. eg. the UI is often created from the model data. 
+Controllers - Controllers are the components that handle and repond to user input and interaction
+
+Why NorthOne ?

@@ -6,8 +6,8 @@ Task.findAll = () => {
   return db.query('SELECT * FROM tasks ORDER BY due_date');
 };
 
-Task.findAllByUser = userId => {
-  return db.query('SELECT * FROM tasks WHERE user_id = $1 ORDER BY due_date ', [userId]);
+Task.findAllByUser = (userId, orderBy = due_date) => {
+  return db.query('SELECT * FROM tasks WHERE user_id = $1 ORDER BY $2 ', [userId, orderBy]);
 };
 
 // use for Search feature, very inefficient, unscalable
