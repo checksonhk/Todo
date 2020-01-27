@@ -14,7 +14,7 @@ Category.create = name => {
   return db.one('INSERT INTO categories (name) VALUES ($1) RETURNING *', [name]);
 };
 
-// Category.destroy = id => {
+// Category.delete = id => {
 //   return db.none(`UPDATE Categorys SET active = false WHERE id = $1`, [id]);
 // };
 

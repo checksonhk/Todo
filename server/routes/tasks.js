@@ -6,6 +6,6 @@ taskRoutes.get('/:id', controller.show);
 taskRoutes.get('/', controller.index);
 taskRoutes.post('/', controller.create);
 taskRoutes.put('/:id', controller.update);
-taskRoutes.delete('/:id', controller.destroy);
+taskRoutes.delete('/:id', controller.delete);
 
 module.exports = taskRoutes;

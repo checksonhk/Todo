@@ -14,7 +14,7 @@ User.create = session => {
   return db.one('INSERT INTO users (session) VALUES ($1) RETURNING *', [session]);
 };
 
-// User.destroy = id => {
+// User.delete = id => {
 //   return db.none(`UPDATE users SET active = false WHERE id = $1`, [id]);
 // };
 

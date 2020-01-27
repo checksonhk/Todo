@@ -106,9 +106,9 @@ controller.update = async (req, res) => {
   }
 };
 
-controller.destroy = async (req, res) => {
+controller.delete = async (req, res) => {
   try {
-    Task.destroy(req.params.id);
+    Task.delete(req.params.id);
     res.json({ message: `Task ${req.params.id} was deleted` });
   } catch (err) {
     console.log('ERROR', err);
