@@ -1,28 +1,52 @@
 const Task = require('../models/taskModel');
+const User = require('../models/userModel');
 
 const controller = {};
 
 controller.index = async (req, res) => {
   try {
-    // search query
-    if (req.query.query) {
-      const tasks = await Task.findByTitle(req.params.id, req.query.query);
-      return res.json({
-        data: { tasks },
-      });
-    }
     // If exisiting user, return task for that user otherwise return all tasks
-    else if (req.session.userId) {
-      const tasks = await Task.findAllByUser(req.session.userId);
+    const user = await User.findById(req.session.userId);
+    if (user) {
+      // search query
+      if (req.query.query) {
+        const tasks = await Task.findByTitle(req.session.userId, req.query.query);
+        return res.json({
+          data: { tasks },
+        });
+      }
+
+      // filter query
+      if (req.query.filter !== 'all') {
+        const tasks = await Task.findAllByStatus(req.session.userId, req.query.filter);
+        return res.json({
+          data: { tasks },
+        });
+      }
+
+      // if a order is sepcified return tasks in filtered order, else return task ordered by id
+      const tasks = req.query.orderBy
+        ? await Task.findAllByUser(req.session.userId, req.query.orderBy)
+        : await Task.findAllByUser(req.session.userId);
       return res.json({
         data: { tasks },
       });
     }
 
+    // if user doesn't exist create a user and set session
+    const newUser = await User.create();
+    req.session.userId = newUser.id;
+    const tasks = await Task.findAllByUser(req.session.userId);
+    return res.json({
+      data: { tasks },
+    });
+
+    /* Only allowed to see your own tasks
     const tasks = await Task.findAll();
     res.json({
       data: { tasks },
     });
+    */
   } catch (err) {
     console.log('ERROR', err);
     res.status(400).json({ message: 'Failed to find Tasks' });

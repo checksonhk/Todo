@@ -6,18 +6,16 @@ Task.findAll = () => {
   return db.query('SELECT * FROM tasks ORDER BY due_date');
 };
 
-Task.findAllByUser = (userId, orderBy = due_date) => {
-  return db.query('SELECT * FROM tasks WHERE user_id = $1 ORDER BY $2 ', [userId, orderBy]);
+Task.findAllByUser = (userId, orderBy) => {
+  const sqlQuery = 'SELECT * FROM tasks WHERE user_id = $1';
+
+  return db.query(orderBy ? sqlQuery + ` ORDER BY ${orderBy}` : sqlQuery, [userId]);
 };
 
 // use for Search feature, very inefficient, unscalable
-Task.findByTitle = (userId, query) => {
-  return db.query('SELECT * FROM tasks WHERE user_id = $1 AND title ILIKE $2 OR title ILIKE $3 OR title ILIKE $4 ORDER BY due_date', [
-    userId,
-    `${query}%`,
-    `%${query}`,
-    `%${query}%`,
-  ]);
+Task.findByTitle = (userId, query, orderBy) => {
+  const sqlQuery = 'SELECT * FROM tasks WHERE user_id = $1 AND (title ILIKE $2 OR title ILIKE $3 OR title ILIKE $4)';
+  return db.query(orderBy ? sqlQuery + ` ORDER BY ${orderBy}` : sqlQuery, [userId, `${query}%`, `%${query}`, `%${query}%`]);
 };
 
 // use for filtering by status, should create validation for ensuring it only accept 'active', 'pending', 'done'
@@ -31,10 +29,6 @@ Task.findById = id => {
 
 Task.create = (task, user_id) => {
   return db.one('INSERT INTO tasks (title, due_date, user_id) VALUES  ($1, $2, $3) RETURNING *', [task.title, task.due_date, user_id]);
-};
-
-Task.findLength = task => {
-  return db.query('SELECT COUNT(id) FROM tasks');
 };
 
 Task.update = (task, id) => {
