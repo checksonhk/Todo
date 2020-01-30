@@ -1,11 +1,22 @@
-const Category = require('../models/CategoryModel');
+const Category = require('../models/categoryModel');
 
 const controller = {};
 
 controller.index = async (req, res) => {
   try {
-    const category = await Category.findByName(req.body.name);
-    console.log(category);
+    const categories = await Category.findAll();
+    res.json({
+      data: { categories },
+    });
+  } catch (err) {
+    console.log('ERROR', err);
+    res.status(400).json({ message: 'Failed to find categories' });
+  }
+};
+
+controller.show = async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.id);
     res.json({
       data: { category },
     });

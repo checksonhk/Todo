@@ -78,12 +78,8 @@ controller.show = async (req, res) => {
 // };
 
 controller.create = async (req, res) => {
-  console.log(req.body.due_date);
   try {
-    const newTask = await Task.create(
-      { used_id: req.session.userId, title: req.body.title, due_date: req.body.due_date },
-      req.session.userId,
-    );
+    const newTask = await Task.create({ title: req.body.title, due_date: req.body.due_date }, req.session.userId);
     res.json({
       data: { newTask },
     });
@@ -96,7 +92,7 @@ controller.create = async (req, res) => {
 controller.update = async (req, res) => {
   try {
     const updatedTask = await Task.update(
-      { title: req.body.title, status: req.body.status, due_date: req.body.due_date, category_id: req.body.category },
+      { title: req.body.title, status: req.body.status, due_date: req.body.due_date, category_id: req.body.category_id },
       req.params.id,
     );
     res.sendStatus(200);

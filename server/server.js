@@ -46,13 +46,15 @@ app.use(express.static(__dirname + '/public'));
 // const usersRoutes = require('./routes/users');
 const taskRoutes = require('./routes/tasks');
 const userRoutes = require('./routes/users');
+const categoryRoutes = require('./routes/categories');
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/categories', categoryRoutes);
 
 app.use(express.static(__dirname)); //here is important thing - no static directory, because all static :)
 
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+// app.get('/*', function(req, res) {
+//   res.sendFile(path.join(__dirname, 'index.html'));
+// });
 
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
