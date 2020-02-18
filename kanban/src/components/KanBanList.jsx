@@ -39,6 +39,7 @@ export default function KanbanColumn(props) {
       </h4>
       {generateKanbanCards()}
       <br />
+      <KanbanCard stage={props.stage} />
     </div>
   );
 }

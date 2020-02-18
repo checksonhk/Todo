@@ -51,7 +51,7 @@ let projectList = {
  * The Kanban Board React component
  */
 export default function KanbanBoard(props) {
-  const { state, dispatch, handleOnDragEnd, handleOnDragEnter } = useContext(taskContext);
+  const { taskState, taskDispatch, handleOnDragEnd, handleOnDragEnter } = useContext(taskContext);
 
   const columns = [
     { id: 1, name: 'Planning', stage: 1 },
@@ -62,10 +62,15 @@ export default function KanbanBoard(props) {
   ];
 
   useEffect(() => {
-    dispatch({ type: 'INIT', payload: projectList });
+    taskDispatch({ type: 'FETCH_TASKS', payload: projectList });
   }, []);
 
-  return state.isLoading ? (
+  useEffect(() => {
+    taskDispatch({ type: 'GET_TASK' });
+    // console.log('calling');
+  }, [taskState.projects]);
+
+  return taskState.isLoading ? (
     <h3>Loading...</h3>
   ) : (
     <div>
@@ -74,7 +79,7 @@ export default function KanbanBoard(props) {
           <KanbanList
             name={column.name}
             stage={column.stage}
-            projects={Object.values(state.projects).filter(project => {
+            projects={Object.values(taskState.projects).filter(project => {
               return parseInt(project.project_stage, 10) === column.stage;
             })}
             onDragEnter={handleOnDragEnter}

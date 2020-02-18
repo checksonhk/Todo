@@ -1,11 +1,11 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext } from 'react';
 import { useReducer } from 'react';
 
 export const taskContext = createContext();
 
 function taskReducer(state, action) {
   switch (action.type) {
-    case 'INIT':
+    case 'FETCH_TASKS':
       return { ...state, projects: action.payload, isLoading: false };
     case 'GET_TASKS':
       return state;
@@ -13,6 +13,11 @@ function taskReducer(state, action) {
       return {
         ...state,
         projects: { ...state.projects, [action.id]: { ...state.projects[action.id], project_stage: state.draggedOverCol } },
+      };
+    case 'ADD_TASK':
+      return {
+        ...state,
+        projects: { ...state.projects, [action.id]: action.payload },
       };
     case 'SET':
       return { ...state, [action.key]: action.payload };
@@ -43,8 +48,8 @@ export default function TaskContextProvider(props) {
   return (
     <taskContext.Provider
       value={{
-        state,
-        dispatch,
+        taskState: state,
+        taskDispatch: dispatch,
         handleOnDragEnd,
         handleOnDragEnter,
       }}>
