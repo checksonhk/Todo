@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import KanbanCard from './KanBanCard';
 /*
  * The Kanban Board Column React component
  */

@@ -1,4 +1,5 @@
 import React from 'react';
+import KanbanBoard from './KanbanBoard';
 /*
  * The Kanban React component
  */

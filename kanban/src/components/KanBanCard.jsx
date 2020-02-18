@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 /*
  * The Kanban Board Card component
  */
@@ -20,7 +20,7 @@ export default function KanbanCard(props) {
       style={cardStyle}
       draggable={true}
       onDragEnd={e => {
-        props.onDragEnd(e, props.project);
+        props.onDragEnd(e, props.project.id);
       }}>
       <div>
         <h4>{props.project.name}</h4>
