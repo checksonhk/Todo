@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { useEffect } from 'react';
 import taskContext from '../context/taskContext';
+import KanbanList from './KanBanList';
+
 let projectList = {
   1: {
     id: 1,
@@ -68,7 +70,7 @@ export default function KanbanBoard(props) {
     <div>
       {columns.map(column => {
         return (
-          <KanbanColumn
+          <KanbanList
             name={column.name}
             stage={column.stage}
             projects={state.projects.filter(project => {
